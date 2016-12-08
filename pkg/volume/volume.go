@@ -21,7 +21,6 @@ import (
 	"io/ioutil"
 	"os"
 	filepath "path/filepath"
-	"runtime"
 	"time"
 
 	"github.com/golang/glog"
@@ -238,22 +237,12 @@ func RenameDirectory(oldPath, newName string) (string, error) {
 		return "", err
 	}
 
-	// os.Rename call fails on windows (https://github.com/golang/go/issues/14527)
-	// Replacing with copyFolder to the newPath and deleting the oldPath directory
-	if runtime.GOOS == "windows" {
-		err = copyFolder(oldPath, newPath)
-		if err != nil {
-			glog.Errorf("Error copying folder from: %s to: %s with error: %v", oldPath, newPath, err)
-			return "", err
-		}
-		os.RemoveAll(oldPath)
-		return newPath, nil
-	}
-
-	err = os.Rename(oldPath, newPath)
+	err = copyFolder(oldPath, newPath)
 	if err != nil {
+		glog.Errorf("Error copying folder from: %s to: %s with error: %v", oldPath, newPath, err)
 		return "", err
 	}
+	os.RemoveAll(oldPath)
 	return newPath, nil
 }
 
@@ -280,8 +269,8 @@ func copyFolder(source string, dest string) (err error) {
 			continue
 		}
 
-		sourcefilepointer := source + "\\" + obj.Name()
-		destinationfilepointer := dest + "\\" + obj.Name()
+		sourcefilepointer := filepath.Join(source, obj.Name())
+		destinationfilepointer := filepath.Join(dest, obj.Name())
 
 		if obj.IsDir() {
 			err = copyFolder(sourcefilepointer, destinationfilepointer)
