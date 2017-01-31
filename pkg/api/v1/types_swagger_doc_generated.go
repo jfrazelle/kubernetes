@@ -1309,6 +1309,7 @@ var map_PodSpec = map[string]string{
 	"subdomain":                     "If specified, the fully qualified Pod hostname will be \"<hostname>.<subdomain>.<pod namespace>.svc.<cluster domain>\". If not specified, the pod will not have a domainname at all.",
 	"affinity":                      "If specified, the pod's scheduling constraints",
 	"schedulername":                 "If specified, the pod will be dispatched by specified scheduler. If not specified, the pod will be dispatched by default scheduler.",
+	"serviceDependencies":           "ServiceDependencies is a list of services in this pod's namespace that the pod depends on in order to start.",
 }
 
 func (PodSpec) SwaggerDoc() map[string]string {

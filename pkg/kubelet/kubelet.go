@@ -795,6 +795,7 @@ func NewMainKubelet(kubeCfg *componentconfig.KubeletConfiguration, kubeDeps *Kub
 
 type serviceLister interface {
 	List(labels.Selector) ([]*v1.Service, error)
+	Get(string) (*v1.Service, error)
 }
 
 type nodeLister interface {

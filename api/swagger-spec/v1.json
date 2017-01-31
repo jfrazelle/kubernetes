@@ -18276,6 +18276,13 @@
      "schedulername": {
       "type": "string",
       "description": "If specified, the pod will be dispatched by specified scheduler. If not specified, the pod will be dispatched by default scheduler."
+     },
+     "serviceDependencies": {
+      "type": "array",
+      "items": {
+       "$ref": "v1.LocalObjectReference"
+      },
+      "description": "ServiceDependencies is a list of services in this pod's namespace that the pod depends on in order to start."
      }
     }
    },

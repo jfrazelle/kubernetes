@@ -89,6 +89,17 @@ func (s *StoreToServiceLister) List(selector labels.Selector) (ret []*v1.Service
 	return ret, err
 }
 
+func (s *StoreToServiceLister) Get(name string) (*v1.Service, error) {
+	obj, exists, err := s.Indexer.GetByKey(name)
+	if err != nil {
+		return nil, err
+	}
+	if !exists {
+		return nil, errors.NewNotFound(api.Resource("service"), name)
+	}
+	return obj.(*v1.Service), nil
+}
+
 func (s *StoreToServiceLister) Services(namespace string) storeServicesNamespacer {
 	return storeServicesNamespacer{s.Indexer, namespace}
 }

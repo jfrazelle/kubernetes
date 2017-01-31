@@ -2603,6 +2603,11 @@ message PodSpec {
   // If not specified, the pod will be dispatched by default scheduler.
   // +optional
   optional string schedulername = 19;
+
+  // ServiceDependencies is a list of services in this pod's namespace that the
+  // pod depends on in order to start.
+  // +optional
+  repeated LocalObjectReference serviceDependencies = 20;
 }
 
 // PodStatus represents information about the status of a pod. Status may trail the actual

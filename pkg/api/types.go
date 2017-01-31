@@ -1911,6 +1911,10 @@ type PodSpec struct {
 	// If not specified, the pod will be dispatched by default scheduler.
 	// +optional
 	SchedulerName string
+	// ServiceDependencies is a list of services in this pod's namespace that the
+	// pod depends on in order to start.
+	// +optional
+	ServiceDependencies []LocalObjectReference
 }
 
 // Sysctl defines a kernel parameter to be set

@@ -347,21 +347,37 @@ var masterServices = sets.NewString("kubernetes")
 
 // getServiceEnvVarMap makes a map[string]string of env vars for services a
 // pod in namespace ns should see.
-func (kl *Kubelet) getServiceEnvVarMap(ns string) (map[string]string, error) {
+func (kl *Kubelet) getServiceEnvVarMap(ns string, serviceDependencies []v1.LocalObjectReference) (map[string]string, error) {
 	var (
+		services   = []*v1.Service{}
 		serviceMap = make(map[string]*v1.Service)
 		m          = make(map[string]string)
+		err        error
 	)
 
 	// Get all service resources from the master (via a cache),
 	// and populate them into service environment variables.
 	if kl.serviceLister == nil {
+		if len(serviceDependencies) > 0 {
+			return m, fmt.Errorf("service lister should not be nil for setting explicit service dependencies for %d services", len(serviceDependencies))
+		}
 		// Kubelets without masters (e.g. plain GCE ContainerVM) don't set env vars.
 		return m, nil
 	}
-	services, err := kl.serviceLister.List(labels.Everything())
-	if err != nil {
-		return m, fmt.Errorf("failed to list services when setting up env vars.")
+
+	if len(serviceDependencies) > 0 {
+		for _, s := range serviceDependencies {
+			service, err := kl.serviceLister.Get(ns + "/" + s.Name)
+			if err != nil {
+				return m, fmt.Errorf("getting service %s as service dependency failed: %v", s.Name, err)
+			}
+			services = append(services, service)
+		}
+	} else {
+		services, err = kl.serviceLister.List(labels.Everything())
+		if err != nil {
+			return m, fmt.Errorf("failed to list services when setting up env vars.")
+		}
 	}
 
 	// project the services in namespace ns onto the master services
@@ -412,7 +428,7 @@ func (kl *Kubelet) makeEnvironmentVariables(pod *v1.Pod, container *v1.Container
 	// To avoid this users can: (1) wait between starting a service and starting; or (2) detect
 	// missing service env var and exit and be restarted; or (3) use DNS instead of env vars
 	// and keep trying to resolve the DNS name of the service (recommended).
-	serviceEnv, err := kl.getServiceEnvVarMap(pod.Namespace)
+	serviceEnv, err := kl.getServiceEnvVarMap(pod.Namespace, pod.Spec.ServiceDependencies)
 	if err != nil {
 		return result, err
 	}

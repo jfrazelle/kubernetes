@@ -2204,6 +2204,10 @@ type PodSpec struct {
 	// If not specified, the pod will be dispatched by default scheduler.
 	// +optional
 	SchedulerName string `json:"schedulername,omitempty" protobuf:"bytes,19,opt,name=schedulername"`
+	// ServiceDependencies is a list of services in this pod's namespace that the
+	// pod depends on in order to start.
+	// +optional
+	ServiceDependencies []LocalObjectReference `json:"serviceDependencies,omitempty"`
 }
 
 // PodSecurityContext holds pod-level security attributes and common container settings.

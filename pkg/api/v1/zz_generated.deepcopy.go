@@ -2315,6 +2315,11 @@ func DeepCopy_v1_PodSpec(in interface{}, out interface{}, c *conversion.Cloner) 
 				return err
 			}
 		}
+		if in.ServiceDependencies != nil {
+			in, out := &in.ServiceDependencies, &out.ServiceDependencies
+			*out = make([]LocalObjectReference, len(*in))
+			copy(*out, *in)
+		}
 		return nil
 	}
 }
