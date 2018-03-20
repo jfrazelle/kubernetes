@@ -588,7 +588,7 @@ message LinuxContainerSecurityContext {
     bool no_new_privs = 11;
     // raw_proc removes the proc paths in masked paths and readonly paths
     // for the container runtime.
-    bool raw_proc = 12;
+    bool raw_proc = 13;
 }
 
 // LinuxContainerConfig contains platform-specific configuration for
