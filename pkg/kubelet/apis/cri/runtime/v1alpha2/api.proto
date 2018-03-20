@@ -586,6 +586,9 @@ message LinuxContainerSecurityContext {
     // no_new_privs defines if the flag for no_new_privs should be set on the
     // container.
     bool no_new_privs = 11;
+    // raw_proc removes the proc paths in masked paths and readonly paths
+    // for the container runtime.
+    bool raw_proc = 12;
 }
 
 // LinuxContainerConfig contains platform-specific configuration for
