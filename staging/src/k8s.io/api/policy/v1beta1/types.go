@@ -201,6 +201,8 @@ type PodSecurityPolicySpec struct {
 	// is allowed in the "volumes" field.
 	// +optional
 	AllowedFlexVolumes []AllowedFlexVolume `json:"allowedFlexVolumes,omitempty" protobuf:"bytes,18,rep,name=allowedFlexVolumes"`
+	// AllowRawProc determines if a user is allowed to set RawProc for containers.
+	AllowRawProc bool `json:"allowRawProc,omitempty" protobuf:"varint,19,opt,name=allowRawProc"`
 }
 
 // AllowedHostPath defines the host volume conditions that will be enabled by a policy

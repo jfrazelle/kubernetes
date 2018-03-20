@@ -4908,6 +4908,10 @@ type SecurityContext struct {
 	// 2) has CAP_SYS_ADMIN
 	// +optional
 	AllowPrivilegeEscalation *bool `json:"allowPrivilegeEscalation,omitempty" protobuf:"varint,7,opt,name=allowPrivilegeEscalation"`
+	// RawProc will make sure the container paths in /proc are not set as masked or readonly.
+	// This option should only be used if you are nesting unprivileged containers.
+	// +optional
+	RawProc bool `json:"rawProc,omitempty" protobuf:"varint,9,opt,name=rawProc"`
 }
 
 // SELinuxOptions are the labels to be applied to the container
