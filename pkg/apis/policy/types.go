@@ -215,6 +215,9 @@ type PodSecurityPolicySpec struct {
 	// is allowed in the "Volumes" field.
 	// +optional
 	AllowedFlexVolumes []AllowedFlexVolume
+	// AllowRawProc determines if a user is allowed to set RawProc for containers.
+	// +optional
+	AllowRawProc bool
 }
 
 // AllowedHostPath defines the host volume conditions that will be enabled by a policy

@@ -188,6 +188,7 @@ func (w *podSecurityContextWrapper) SetFSGroup(v *int64) {
 type ContainerSecurityContextAccessor interface {
 	Capabilities() *api.Capabilities
 	Privileged() *bool
+	RawProc() bool
 	SELinuxOptions() *api.SELinuxOptions
 	RunAsUser() *int64
 	RunAsNonRoot() *bool
@@ -256,6 +257,12 @@ func (w *containerSecurityContextWrapper) SetPrivileged(v *bool) {
 	}
 	w.ensureContainerSC()
 	w.containerSC.Privileged = v
+}
+func (w *containerSecurityContextWrapper) RawProc() bool {
+	if w.containerSC == nil {
+		return false
+	}
+	return w.containerSC.RawProc
 }
 func (w *containerSecurityContextWrapper) SELinuxOptions() *api.SELinuxOptions {
 	if w.containerSC == nil {
@@ -355,6 +362,9 @@ func (w *effectiveContainerSecurityContextWrapper) SetPrivileged(v *bool) {
 	if !reflect.DeepEqual(w.Privileged(), v) {
 		w.containerSC.SetPrivileged(v)
 	}
+}
+func (w *effectiveContainerSecurityContextWrapper) RawProc() bool {
+	return w.containerSC.RawProc()
 }
 func (w *effectiveContainerSecurityContextWrapper) SELinuxOptions() *api.SELinuxOptions {
 	if v := w.containerSC.SELinuxOptions(); v != nil {

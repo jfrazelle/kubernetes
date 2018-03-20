@@ -137,6 +137,10 @@ func modifyHostConfig(sc *runtimeapi.LinuxContainerSecurityContext, hostConfig *
 		hostConfig.SecurityOpt = append(hostConfig.SecurityOpt, "no-new-privileges")
 	}
 
+	if sc.RawProc {
+		hostConfig.RawAccess = []string{"/proc/*"}
+	}
+
 	return nil
 }
 

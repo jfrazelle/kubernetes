@@ -4371,6 +4371,10 @@ type SecurityContext struct {
 	// the no_new_privs flag will be set on the container process.
 	// +optional
 	AllowPrivilegeEscalation *bool
+	// RawProc will make sure the container paths in /proc are not set as masked or readonly.
+	// This option should only be used if you are nesting unprivileged containers.
+	// +optional
+	RawProc bool
 }
 
 // SELinuxOptions are the labels to be applied to the container.

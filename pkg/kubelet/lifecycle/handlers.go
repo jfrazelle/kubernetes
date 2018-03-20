@@ -230,3 +230,68 @@ func noNewPrivsRequired(pod *v1.Pod) bool {
 	}
 	return false
 }
+
+func NewRawProcAdmitHandler(runtime kubecontainer.Runtime) PodAdmitHandler {
+	return &rawProcAdmitHandler{
+		Runtime: runtime,
+	}
+}
+
+type rawProcAdmitHandler struct {
+	kubecontainer.Runtime
+}
+
+func (a *rawProcAdmitHandler) Admit(attrs *PodAdmitAttributes) PodAdmitResult {
+	// If the pod is already running or terminated, no need to recheck NoNewPrivs.
+	if attrs.Pod.Status.Phase != v1.PodPending {
+		return PodAdmitResult{Admit: true}
+	}
+
+	// If the containers in a pod do not require RawProc, admit it.
+	if !rawProcRequired(attrs.Pod) {
+		return PodAdmitResult{Admit: true}
+	}
+
+	// Always admit runtimes except docker.
+	if a.Runtime.Type() != kubetypes.DockerContainerRuntime {
+		return PodAdmitResult{Admit: true}
+	}
+
+	// Make sure docker api version is valid.
+	rversion, err := a.Runtime.APIVersion()
+	if err != nil {
+		return PodAdmitResult{
+			Admit:   false,
+			Reason:  "RawProc",
+			Message: fmt.Sprintf("Cannot enforce RawProc: %v", err),
+		}
+	}
+	v, err := rversion.Compare("1.36.0")
+	if err != nil {
+		return PodAdmitResult{
+			Admit:   false,
+			Reason:  "RawProc",
+			Message: fmt.Sprintf("Cannot enforce RawProc: %v", err),
+		}
+	}
+	// If the version is less than 1.36 it will return -1 above.
+	if v == -1 {
+		return PodAdmitResult{
+			Admit:   false,
+			Reason:  "RawProc",
+			Message: fmt.Sprintf("Cannot enforce RawProc: docker runtime API version %q must be greater than or equal to 1.36", rversion.String()),
+		}
+	}
+
+	return PodAdmitResult{Admit: true}
+}
+
+func rawProcRequired(pod *v1.Pod) bool {
+	// Iterate over pod containers and check if we added RawProc.
+	for _, c := range pod.Spec.Containers {
+		if c.SecurityContext != nil && c.SecurityContext.RawProc {
+			return true
+		}
+	}
+	return false
+}

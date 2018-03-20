@@ -67,6 +67,10 @@ func (m *kubeGenericRuntimeManager) determineEffectiveSecurityContext(pod *v1.Po
 
 	synthesized.NoNewPrivs = securitycontext.AddNoNewPrivileges(effectiveSc)
 
+	if effectiveSc.RawProc {
+		synthesized.RawProc = true
+	}
+
 	return synthesized
 }
 

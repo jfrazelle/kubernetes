@@ -442,6 +442,9 @@ func TestValidateContainerSecurityContextFailures(t *testing.T) {
 	var priv bool = true
 	failPrivPod.Spec.Containers[0].SecurityContext.Privileged = &priv
 
+	failRawProcPod := defaultPod()
+	failRawProcPod.Spec.Containers[0].SecurityContext.RawProc = true
+
 	failCapsPod := defaultPod()
 	failCapsPod.Spec.Containers[0].SecurityContext.Capabilities = &api.Capabilities{
 		Add: []api.Capability{"foo"},
@@ -496,6 +499,11 @@ func TestValidateContainerSecurityContextFailures(t *testing.T) {
 			pod:           failPrivPod,
 			psp:           defaultPSP(),
 			expectedError: "Privileged containers are not allowed",
+		},
+		"failRawProcPSP": {
+			pod:           failRawProcPod,
+			psp:           defaultPSP(),
+			expectedError: "RawProc containers are not allowed",
 		},
 		"failCapsPSP": {
 			pod:           failCapsPod,

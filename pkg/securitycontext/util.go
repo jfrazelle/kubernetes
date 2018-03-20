@@ -121,6 +121,10 @@ func DetermineEffectiveSecurityContext(pod *v1.Pod, container *v1.Container) *v1
 		*effectiveSc.AllowPrivilegeEscalation = *containerSc.AllowPrivilegeEscalation
 	}
 
+	if containerSc.RawProc {
+		effectiveSc.RawProc = containerSc.RawProc
+	}
+
 	return effectiveSc
 }
 

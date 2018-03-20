@@ -271,6 +271,11 @@ func (s *simpleProvider) ValidateContainerSecurityContext(pod *api.Pod, containe
 		allErrs = append(allErrs, field.Invalid(fldPath.Child("privileged"), *privileged, "Privileged containers are not allowed"))
 	}
 
+	rawProc := sc.RawProc()
+	if !s.psp.Spec.AllowRawProc && rawProc {
+		allErrs = append(allErrs, field.Invalid(fldPath.Child("rawProc"), *privileged, "RawProc containers are not allowed"))
+	}
+
 	allErrs = append(allErrs, s.strategies.CapabilitiesStrategy.Validate(pod, container, sc.Capabilities())...)
 
 	containersPath := fldPath.Child("containers")
