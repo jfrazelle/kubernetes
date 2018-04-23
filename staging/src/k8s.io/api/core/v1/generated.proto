@@ -3827,6 +3827,11 @@ message SecurityContext {
   // 2) has CAP_SYS_ADMIN
   // +optional
   optional bool allowPrivilegeEscalation = 7;
+
+  // RawProc will make sure the container paths in /proc are not set as masked or readonly.
+  // This option should only be used if you are nesting unprivileged containers.
+  // +optional
+  optional bool rawProc = 9;
 }
 
 // SerializedReference is a reference to serialized object.

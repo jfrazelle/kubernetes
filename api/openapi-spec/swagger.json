@@ -79323,6 +79323,10 @@
       "description": "Run container in privileged mode. Processes in privileged containers are essentially equivalent to root on the host. Defaults to false.",
       "type": "boolean"
      },
+     "rawProc": {
+      "description": "RawProc will make sure the container paths in /proc are not set as masked or readonly. This option should only be used if you are nesting unprivileged containers.",
+      "type": "boolean"
+     },
      "readOnlyRootFilesystem": {
       "description": "Whether this container has a read-only root filesystem. Default is false.",
       "type": "boolean"
@@ -81064,6 +81068,10 @@
       "description": "allowPrivilegeEscalation determines if a pod can request to allow privilege escalation. If unspecified, defaults to true.",
       "type": "boolean"
      },
+     "allowRawProc": {
+      "description": "AllowRawProc determines if a user is allowed to set RawProc for containers.",
+      "type": "boolean"
+     },
      "allowedCapabilities": {
       "description": "allowedCapabilities is a list of capabilities that can be requested to add to the container. Capabilities in this field may be added at the pod author's discretion. You must not list a capability in both allowedCapabilities and requiredDropCapabilities.",
       "type": "array",
@@ -81946,6 +81954,10 @@
     "properties": {
      "allowPrivilegeEscalation": {
       "description": "allowPrivilegeEscalation determines if a pod can request to allow privilege escalation. If unspecified, defaults to true.",
+      "type": "boolean"
+     },
+     "allowRawProc": {
+      "description": "AllowRawProc determines if a user is allowed to set RawProc for containers.",
       "type": "boolean"
      },
      "allowedCapabilities": {

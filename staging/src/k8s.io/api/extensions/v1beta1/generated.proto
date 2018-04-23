@@ -878,6 +878,9 @@ message PodSecurityPolicySpec {
   // is allowed in the "volumes" field.
   // +optional
   repeated AllowedFlexVolume allowedFlexVolumes = 18;
+
+  // AllowRawProc determines if a user is allowed to set RawProc for containers.
+  optional bool allowRawProc = 19;
 }
 
 // DEPRECATED - This group version of ReplicaSet is deprecated by apps/v1beta2/ReplicaSet. See the release notes for

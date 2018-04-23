@@ -385,6 +385,7 @@ func autoConvert_v1beta1_PodSecurityPolicySpec_To_policy_PodSecurityPolicySpec(i
 	}
 	out.AllowedHostPaths = *(*[]policy.AllowedHostPath)(unsafe.Pointer(&in.AllowedHostPaths))
 	out.AllowedFlexVolumes = *(*[]policy.AllowedFlexVolume)(unsafe.Pointer(&in.AllowedFlexVolumes))
+	out.AllowRawProc = in.AllowRawProc
 	return nil
 }
 
@@ -422,6 +423,7 @@ func autoConvert_policy_PodSecurityPolicySpec_To_v1beta1_PodSecurityPolicySpec(i
 	}
 	out.AllowedHostPaths = *(*[]v1beta1.AllowedHostPath)(unsafe.Pointer(&in.AllowedHostPaths))
 	out.AllowedFlexVolumes = *(*[]v1beta1.AllowedFlexVolume)(unsafe.Pointer(&in.AllowedFlexVolumes))
+	out.AllowRawProc = in.AllowRawProc
 	return nil
 }
 

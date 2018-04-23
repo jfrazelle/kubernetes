@@ -478,6 +478,7 @@ var map_PodSecurityPolicySpec = map[string]string{
 	"allowPrivilegeEscalation":        "allowPrivilegeEscalation determines if a pod can request to allow privilege escalation. If unspecified, defaults to true.",
 	"allowedHostPaths":                "allowedHostPaths is a white list of allowed host paths. Empty indicates that all host paths may be used.",
 	"allowedFlexVolumes":              "allowedFlexVolumes is a whitelist of allowed Flexvolumes.  Empty or nil indicates that all Flexvolumes may be used.  This parameter is effective only when the usage of the Flexvolumes is allowed in the \"volumes\" field.",
+	"allowRawProc":                    "AllowRawProc determines if a user is allowed to set RawProc for containers.",
 }
 
 func (PodSecurityPolicySpec) SwaggerDoc() map[string]string {

@@ -7391,6 +7391,13 @@ If PodSelector is also set, then the NetworkPolicyPeer as a whole selects the Po
 <td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rawProc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">RawProc will make sure the container paths in /proc are not set as masked or readonly. This option should only be used if you are nesting unprivileged containers.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+</tr>
 </tbody>
 </table>
 
@@ -8046,6 +8053,13 @@ If PodSelector is also set, then the NetworkPolicyPeer as a whole selects the Po
 <td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#_v1beta1_allowedflexvolume">v1beta1.AllowedFlexVolume</a> array</p></td>
 <td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">allowRawProc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AllowRawProc determines if a user is allowed to set RawProc for containers.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">false</p></td>
 </tr>
 </tbody>
 </table>
